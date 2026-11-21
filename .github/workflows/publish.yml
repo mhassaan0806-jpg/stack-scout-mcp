@@ -34,11 +34,17 @@ jobs:
           test "$MANIFEST" = "$VERSION" || { echo "manifest.json version $MANIFEST != package version $VERSION"; exit 1; }
       - name: Build Python package
         run: pip install build && python -m build
+      - uses: astral-sh/setup-uv@v6
       - name: Build Claude Desktop extension
         run: |
           npx -y @anthropic-ai/mcpb validate manifest.json
           npx -y @anthropic-ai/mcpb pack . stack-scout.mcpb
           npx -y @anthropic-ai/mcpb info stack-scout.mcpb
+      - name: Unpack the built .mcpb and start it the way Claude Desktop does
+        run: |
+          mkdir /tmp/ext && cd /tmp/ext && unzip -q "$GITHUB_WORKSPACE/stack-scout.mcpb"
+          test -f stack_scout_mcp/server.py || { echo "server.py missing from the bundle"; exit 1; }
+          uv run --directory /tmp/ext python -c "import asyncio; from stack_scout_mcp.server import mcp; print('tools:', [t.name for t in asyncio.run(mcp.list_tools())])"
       - uses: actions/upload-artifact@v4
         with:
           name: dist

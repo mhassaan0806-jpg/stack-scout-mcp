@@ -2,7 +2,7 @@
   "manifest_version": "0.4",
   "name": "stack-scout-mcp",
   "display_name": "Stack Scout",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Find free, open-source tools for anything you build, checked to be alive and truly free.",
   "long_description": "Tell Claude what you want to build. Stack Scout finds free, open-source tools for every part of it, checks each one against live data (last code change, license file, releases, downloads, security score, known vulnerabilities, Hacker News) and explains the catch, such as paid enterprise features or restrictive licenses. It skips archived and abandoned projects. Free, open source (MIT), and runs on your computer.",
   "author": {

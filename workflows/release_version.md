@@ -38,9 +38,17 @@ no passwords or API tokens exist anywhere.
    (the README's Claude Desktop download link) to confirm it downloads.
 
 ## Testing the Claude Desktop extension without Claude Desktop
-Copy `manifest.json`, `pyproject.toml`, `README.md`, `LICENSE` and `stack_scout_mcp/` into an empty folder, then
-start it the way Claude Desktop does: `uv run --directory <folder> stack-scout-mcp` with `GITHUB_TOKEN=""`, via
-an MCP client (see `tests/live_mcp_smoke.py`). 2026-11-22: v0.1.1 started in 13s this way.
+Always test the **real packed `.mcpb`**, never a hand-copied folder. CI does this on every push (tests.yml,
+`extension-manifest` job): pack, unzip, check `stack_scout_mcp/server.py` exists, import the server via
+`uv run --directory <unzipped>`. To check a published release by hand: download
+`releases/latest/download/stack-scout.mcpb`, unzip it, and start it with
+`uv run --directory <unzipped> stack-scout-mcp` and `GITHUB_TOKEN=""` from an MCP client.
+
+## Learnings log (extension)
+- 2026-11-22: v0.1.1's `.mcpb` shipped **without stack_scout_mcp/server.py**. `.mcpbignore` had `server.py`
+  (meant for the root launcher), and gitignore-style patterns without a leading `/` match at any depth.
+  The hand-copied test folder hid it. Fixed in v0.1.2: anchor root-only patterns with `/`, and CI now
+  unpacks and starts the real bundle. PyPI 0.1.1 was not affected (built separately).
 
 ## Edge cases
 - **Tag doesn't match `__version__`:** the build job fails on purpose. Fix the version, delete the tag

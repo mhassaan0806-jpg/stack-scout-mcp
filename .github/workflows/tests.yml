@@ -30,8 +30,14 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
+      - uses: astral-sh/setup-uv@v6
       - name: Validate and pack the Claude Desktop extension
         run: |
           npx -y @anthropic-ai/mcpb validate manifest.json
           npx -y @anthropic-ai/mcpb pack . /tmp/stack-scout.mcpb
           npx -y @anthropic-ai/mcpb info /tmp/stack-scout.mcpb
+      - name: Unpack the real .mcpb and start it the way Claude Desktop does
+        run: |
+          mkdir /tmp/ext && cd /tmp/ext && unzip -q /tmp/stack-scout.mcpb
+          test -f stack_scout_mcp/server.py || { echo "server.py missing from the bundle"; exit 1; }
+          uv run --directory /tmp/ext python -c "import asyncio; from stack_scout_mcp.server import mcp; print('tools:', [t.name for t in asyncio.run(mcp.list_tools())])"
