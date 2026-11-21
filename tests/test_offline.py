@@ -8,13 +8,13 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from tools.format_report import format_report  # noqa: E402
-from tools.license_check import classify, classify_text  # noqa: E402
-from tools.plan_components import plan_components  # noqa: E402
-from tools.rank_tools import rank  # noqa: E402
-from tools.repo_health import assess  # noqa: E402
-from tools.research_tool import readme_signals  # noqa: E402
-from tools.scout_stack import search_terms  # noqa: E402
+from stack_scout_mcp.tools.format_report import format_report  # noqa: E402
+from stack_scout_mcp.tools.license_check import classify, classify_text  # noqa: E402
+from stack_scout_mcp.tools.plan_components import plan_components  # noqa: E402
+from stack_scout_mcp.tools.rank_tools import rank  # noqa: E402
+from stack_scout_mcp.tools.repo_health import assess  # noqa: E402
+from stack_scout_mcp.tools.research_tool import readme_signals  # noqa: E402
+from stack_scout_mcp.tools.scout_stack import search_terms  # noqa: E402
 
 NOW = datetime(2026, 11, 22, tzinfo=timezone.utc)
 MIT_BODY = ("Permission is hereby granted, free of charge, to any person obtaining a copy of this software "

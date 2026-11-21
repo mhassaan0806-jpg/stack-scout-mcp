@@ -14,7 +14,7 @@ Score = popularity (0-40) + recency (0-40) + license (0-20)
                 that is used instead of GitHub's label.
 
 CLI:
-    python tools/repo_health.py medusajs/medusa saleor/saleor
+    python -m stack_scout_mcp.tools.repo_health medusajs/medusa saleor/saleor
 """
 from __future__ import annotations
 
@@ -25,8 +25,7 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))  # allow `python tools/x.py`
-from tools.license_check import classify  # noqa: E402
+from .license_check import classify
 
 STALE_DAYS = 730
 
@@ -100,10 +99,10 @@ def assess(repo: dict, now: datetime | None = None) -> dict:
 
 
 def main() -> None:
-    from tools.github_search import get_repo
+    from .github_search import get_repo
 
     if len(sys.argv) < 2:
-        sys.exit("usage: python tools/repo_health.py owner/repo [owner/repo ...]")
+        sys.exit("usage: python -m stack_scout_mcp.tools.repo_health owner/repo [owner/repo ...]")
     out = []
     for name in sys.argv[1:]:
         repo = get_repo(name)

@@ -12,8 +12,8 @@ No source here needs a key, and none uses the GitHub API quota:
   Hacker News     (Algolia API) discussions linking the repo or its website
 
 CLI:
-    python tools/research_tool.py medusajs/medusa
-    python tools/research_tool.py medusajs/medusa --json
+    python -m stack_scout_mcp.tools.research_tool medusajs/medusa
+    python -m stack_scout_mcp.tools.research_tool medusajs/medusa --json
 """
 from __future__ import annotations
 
@@ -26,10 +26,9 @@ import xml.etree.ElementTree as ET
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))  # allow `python tools/x.py`
-from tools._common import FetchError, RateLimitError  # noqa: E402
-from tools._common import http_get as _http_get  # noqa: E402
-from tools.license_check import classify, classify_text  # noqa: E402
+from ._common import FetchError, RateLimitError
+from ._common import http_get as _http_get
+from .license_check import classify, classify_text
 
 DAY = 24 * 60 * 60
 RAW = "https://raw.githubusercontent.com/{repo}/HEAD/{path}"
@@ -312,9 +311,9 @@ def research_many(repos: list[dict], workers: int = 8) -> list[dict]:
 
 
 def main() -> None:
-    from tools.format_report import format_research
-    from tools.github_search import get_repo
-    from tools.repo_health import assess
+    from .format_report import format_research
+    from .github_search import get_repo
+    from .repo_health import assess
 
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("repo", help="owner/name or a github.com URL")

@@ -4,11 +4,22 @@
 Get Stack Scout running on a computer and plugged into an AI assistant (Claude Code,
 Claude Desktop, Cursor), then confirm it works.
 
-## Required inputs
+## Option A: installed from PyPI (for users)
+Needs [uv](https://docs.astral.sh/uv/). Register the server with the command `uvx` and args `["stack-scout-mcp"]`:
+```
+claude mcp add stack-scout -- uvx stack-scout-mcp
+```
+For Claude Desktop / Cursor, use the JSON in the README. A free `GITHUB_TOKEN` goes in the config's `"env"`.
+The cache is in the user's cache folder (`%LOCALAPPDATA%\stack-scout-mcp\cache` on Windows,
+`~/.cache/stack-scout-mcp/cache` elsewhere), or `STACK_SCOUT_CACHE_DIR` if set.
+
+## Option B: from a clone (for development)
+
+### Required inputs
 - Python 3.10+
 - Absolute path to this folder (below: `<PROJECT>`)
 
-## Steps
+### Steps
 1. Install the only dependency, ideally in a virtual environment:
    ```
    python -m venv .venv

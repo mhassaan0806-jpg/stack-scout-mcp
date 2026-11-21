@@ -6,10 +6,10 @@ them as `components`. Each need can be a catalog id ("auth") or plain words
 makes a keyword-based guess.
 
 CLI:
-    python tools/scout_stack.py "online shoe store"
-    python tools/scout_stack.py "online shoe store" --components auth,payments,ecommerce --language TypeScript
-    python tools/scout_stack.py "pdf tool" --components "extract text from pdf files in python"
-    python tools/scout_stack.py "online shoe store" --no-research --out .tmp/shoe.md --json .tmp/shoe.json
+    python -m stack_scout_mcp.tools.scout_stack "online shoe store"
+    python -m stack_scout_mcp.tools.scout_stack "online shoe store" --components auth,payments,ecommerce --language TypeScript
+    python -m stack_scout_mcp.tools.scout_stack "pdf tool" --components "extract text from pdf files in python"
+    python -m stack_scout_mcp.tools.scout_stack "online shoe store" --no-research --out .tmp/shoe.md --json .tmp/shoe.json
 """
 from __future__ import annotations
 
@@ -21,14 +21,13 @@ from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))  # allow `python tools/x.py`
-from tools._common import FetchError, RateLimitError  # noqa: E402
-from tools.format_report import format_report  # noqa: E402
-from tools.github_search import search_repos  # noqa: E402
-from tools.license_check import classify  # noqa: E402
-from tools.plan_components import load_catalog, plan_components  # noqa: E402
-from tools.rank_tools import rank  # noqa: E402
-from tools.research_tool import research_many, resolve_license  # noqa: E402
+from ._common import FetchError, RateLimitError
+from .format_report import format_report
+from .github_search import search_repos
+from .license_check import classify
+from .plan_components import load_catalog, plan_components
+from .rank_tools import rank
+from .research_tool import research_many, resolve_license
 
 # Words that carry no search meaning. GitHub requires every search word to match, so they must go.
 _FILLER = set(

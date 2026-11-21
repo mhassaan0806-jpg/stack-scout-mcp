@@ -2,7 +2,7 @@
 
 ## Objective
 Teach Stack Scout a new building block (e.g. "PDF generation") or fix one whose results are poor,
-by editing `tools/data/components.json`. No code changes needed.
+by editing `stack_scout_mcp/tools/data/components.json`. No code changes needed.
 
 ## Required inputs
 - The block's purpose in plain words
@@ -11,8 +11,8 @@ by editing `tools/data/components.json`. No code changes needed.
 ## Steps
 1. Find the best query. Try 2-3 candidates and compare the top results:
    ```
-   python tools/github_search.py "topic:pdf-generation" --limit 8
-   python tools/github_search.py "topic:pdf" --limit 8
+   python -m stack_scout_mcp.tools.github_search "topic:pdf-generation" --limit 8
+   python -m stack_scout_mcp.tools.github_search "topic:pdf" --limit 8
    ```
    Prefer `topic:` queries. Plain words match descriptions loosely and pull in noise.
    Each try is one GitHub search (10/min without a token).
@@ -26,15 +26,15 @@ by editing `tools/data/components.json`. No code changes needed.
 3. Optional: add the id to any `archetypes` that usually need it.
 4. Verify:
    ```
-   python tools/plan_components.py "an invoicing app that exports PDF invoices"
-   python tools/scout_stack.py "invoicing app" --components pdf
+   python -m stack_scout_mcp.tools.plan_components "an invoicing app that exports PDF invoices"
+   python -m stack_scout_mcp.tools.scout_stack "invoicing app" --components pdf
    ```
 5. Note the query you chose and why in the learnings log below.
 
 ## Edge cases
 - A topic with only a few repos: add `language_sensitive: false` or pick a broader topic so the
   block doesn't return nothing.
-- Too many tutorials or lists: extend `_NOT_A_TOOL` in `tools/repo_health.py` instead of fighting it in the query.
+- Too many tutorials or lists: extend `_NOT_A_TOOL` in `stack_scout_mcp/tools/repo_health.py` instead of fighting it in the query.
 
 ## Learnings log
 - 2026-11-22: initial 24 blocks; every query checked live against GitHub search.

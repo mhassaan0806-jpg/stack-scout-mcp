@@ -3,23 +3,22 @@ name: tests
 on:
   push:
   pull_request:
+  workflow_call:
 
 jobs:
   offline-tests:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.10", "3.12"]
+        python-version: ["3.10", "3.13"]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Install dependencies
-        run: pip install -r requirements.txt
-      - name: Compile check
-        run: python -m py_compile server.py tools/*.py tests/*.py
+      - name: Install the package
+        run: pip install .
       - name: Offline tests (no network)
         run: python -m unittest discover tests -v
-      - name: MCP server loads and lists its tools
-        run: python -c "import asyncio, server; print([t.name for t in asyncio.run(server.mcp.list_tools())])"
+      - name: Installed command starts and lists its tools
+        run: python -c "import asyncio; from stack_scout_mcp import server; print([t.name for t in asyncio.run(server.mcp.list_tools())])"

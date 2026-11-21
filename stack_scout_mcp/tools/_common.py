@@ -13,12 +13,27 @@ import urllib.error
 import urllib.request
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
-TMP_DIR = ROOT / ".tmp"
-CACHE_DIR = TMP_DIR / "cache"
-DATA_DIR = Path(__file__).resolve().parent / "data"
+from .. import __version__
 
-USER_AGENT = "stack-scout-mcp/0.1"
+DATA_DIR = Path(__file__).resolve().parent / "data"
+# The repo root when running from a git clone; site-packages when installed (then unused).
+REPO_ROOT = Path(__file__).resolve().parent.parent.parent
+IN_CLONE = (REPO_ROOT / "pyproject.toml").exists()
+
+
+def _cache_dir() -> Path:
+    """Clone: <repo>/.tmp/cache (disposable, gitignored). Installed: the user's cache folder."""
+    if os.environ.get("STACK_SCOUT_CACHE_DIR"):
+        return Path(os.environ["STACK_SCOUT_CACHE_DIR"])
+    if IN_CLONE:
+        return REPO_ROOT / ".tmp" / "cache"
+    base = os.environ.get("LOCALAPPDATA") or os.environ.get("XDG_CACHE_HOME") or str(Path.home() / ".cache")
+    return Path(base) / "stack-scout-mcp" / "cache"
+
+
+CACHE_DIR = _cache_dir()
+
+USER_AGENT = f"stack-scout-mcp/{__version__}"
 DEFAULT_TTL = 6 * 60 * 60  # 6 hours
 
 
@@ -38,13 +53,16 @@ _env_loaded = False
 
 
 def load_env() -> None:
-    """Load KEY=VALUE pairs from the project .env into os.environ (no overrides)."""
+    """Clone only: load KEY=VALUE pairs from <repo>/.env into os.environ (no overrides).
+
+    Installed users set GITHUB_TOKEN in their AI app's MCP config ("env") instead.
+    """
     global _env_loaded
     if _env_loaded:
         return
     _env_loaded = True
-    env_path = ROOT / ".env"
-    if not env_path.exists():
+    env_path = REPO_ROOT / ".env"
+    if not IN_CLONE or not env_path.exists():
         return
     for raw in env_path.read_text(encoding="utf-8").splitlines():
         line = raw.strip()

@@ -4,8 +4,8 @@ Uses the free GitHub REST API. Works without a token (10 searches/min);
 set GITHUB_TOKEN in .env to raise that to 30/min.
 
 CLI:
-    python tools/github_search.py "headless cms" --language TypeScript --limit 10
-    python tools/github_search.py --repo medusajs/medusa
+    python -m stack_scout_mcp.tools.github_search "headless cms" --language TypeScript --limit 10
+    python -m stack_scout_mcp.tools.github_search --repo medusajs/medusa
 """
 from __future__ import annotations
 
@@ -16,8 +16,7 @@ import sys
 import urllib.parse
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))  # allow `python tools/x.py`
-from tools._common import http_get, load_env  # noqa: E402
+from ._common import http_get, load_env
 
 API = "https://api.github.com"
 

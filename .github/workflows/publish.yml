@@ -1,0 +1,44 @@
+name: publish
+
+# Publishes to PyPI when a version tag (v0.1.0, v0.2.0, ...) is pushed.
+# Uses PyPI Trusted Publishing: no passwords or API tokens are stored anywhere.
+
+on:
+  push:
+    tags: ["v*"]
+
+jobs:
+  tests:
+    uses: ./.github/workflows/tests.yml
+
+  build:
+    needs: tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Check the tag matches the package version
+        run: |
+          VERSION=$(python -c "import re; print(re.search(r'__version__ = \"(.+)\"', open('stack_scout_mcp/__init__.py').read()).group(1))")
+          test "v$VERSION" = "${GITHUB_REF_NAME}" || { echo "Tag ${GITHUB_REF_NAME} != package version v$VERSION"; exit 1; }
+      - name: Build
+        run: pip install build && python -m build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      - uses: pypa/gh-action-pypi-publish@release/v1

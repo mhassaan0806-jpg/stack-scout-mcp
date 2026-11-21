@@ -1,0 +1,48 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "stack-scout-mcp"
+dynamic = ["version"]
+description = "The honest free-tool finder for AI: an MCP server that finds free, open-source tools for any project and checks they're alive and truly free."
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+requires-python = ">=3.10"
+authors = [{ name = "mhassaan0806-jpg" }]
+keywords = [
+    "mcp", "mcp-server", "model-context-protocol", "claude", "cursor", "open-source",
+    "open-source-alternatives", "tech-stack", "license-checker", "developer-tools",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development",
+    "Topic :: Software Development :: Libraries",
+]
+dependencies = ["mcp>=2.0,<3"]
+
+[project.urls]
+Homepage = "https://github.com/mhassaan0806-jpg/stack-scout-mcp"
+Source = "https://github.com/mhassaan0806-jpg/stack-scout-mcp"
+Issues = "https://github.com/mhassaan0806-jpg/stack-scout-mcp/issues"
+
+[project.scripts]
+stack-scout-mcp = "stack_scout_mcp.server:main"
+
+[tool.hatch.version]
+path = "stack_scout_mcp/__init__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["stack_scout_mcp"]
+
+[tool.hatch.build.targets.sdist]
+include = ["stack_scout_mcp", "tests", "server.py", "README.md", "LICENSE", "llms.txt", "requirements.txt"]

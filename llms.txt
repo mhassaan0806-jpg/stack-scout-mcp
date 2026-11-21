@@ -20,5 +20,5 @@ Key facts:
 
 ## Code
 
-- [server.py](https://github.com/mhassaan0806-jpg/stack-scout-mcp/blob/main/server.py): MCP server
-- [tools/](https://github.com/mhassaan0806-jpg/stack-scout-mcp/tree/main/tools): search, license, health, research, ranking, report
+- [stack_scout_mcp/server.py](https://github.com/mhassaan0806-jpg/stack-scout-mcp/blob/main/stack_scout_mcp/server.py): MCP server
+- [stack_scout_mcp/tools/](https://github.com/mhassaan0806-jpg/stack-scout-mcp/tree/main/stack_scout_mcp/tools): search, license, health, research, ranking, report

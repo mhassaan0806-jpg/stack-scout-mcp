@@ -4,7 +4,7 @@ The report holds facts only. The closing "For the AI" note tells the assistant
 to write the pros, cons, catch and fit from these facts, not from memory.
 
 CLI (reads the JSON written by `scout_stack.py --json`):
-    python tools/format_report.py .tmp/scout_result.json
+    python -m stack_scout_mcp.tools.format_report .tmp/scout_result.json
 """
 from __future__ import annotations
 
@@ -196,6 +196,6 @@ def format_report(result: dict) -> str:
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
-        sys.exit("usage: python tools/format_report.py result.json")
+        sys.exit("usage: python -m stack_scout_mcp.tools.format_report result.json")
     sys.stdout.reconfigure(encoding="utf-8")
     print(format_report(json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))))

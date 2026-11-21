@@ -78,37 +78,53 @@ posing as tools.
 It works for anything, not just apps: "a 2D game engine" → Godot, PixiJS, GDevelop;
 "extract text from PDF files in python" → pdfplumber, pdftext.
 
-## Install
+## Install (one line)
 
-Requires Python 3.10+.
+You need [uv](https://docs.astral.sh/uv/getting-started/installation/), a free Python tool runner.
+It downloads Stack Scout and keeps it updated for you.
 
-```bash
-git clone https://github.com/mhassaan0806-jpg/stack-scout-mcp.git && cd stack-scout-mcp
-python -m venv .venv
-.venv/bin/pip install -r requirements.txt          # Windows: .venv\Scripts\pip install -r requirements.txt
-```
-
-Connect it to **Claude Code**:
+**Claude Code:**
 
 ```bash
-claude mcp add stack-scout -- /full/path/.venv/bin/python /full/path/server.py
+claude mcp add stack-scout -- uvx stack-scout-mcp
 ```
 
-Or add it to **Claude Desktop** / **Cursor** config:
+**Claude Desktop** (`claude_desktop_config.json`), **Cursor** (`~/.cursor/mcp.json`), **VS Code** and other MCP apps:
 
 ```json
 {
   "mcpServers": {
     "stack-scout": {
-      "command": "/full/path/.venv/bin/python",
-      "args": ["/full/path/server.py"]
+      "command": "uvx",
+      "args": ["stack-scout-mcp"]
     }
   }
 }
 ```
 
-Optional: copy `.env.example` to `.env` and add a free GitHub token. It raises GitHub search from
-10 to 30 a minute.
+Restart the app, then ask: *"Use Stack Scout to find free tools for an online shoe store."*
+
+**Optional: more searches.** Without a token, GitHub allows 10 searches a minute. A free
+[GitHub token](https://github.com/settings/tokens) (no permissions needed) raises that to 30. Add it to the config:
+
+```json
+"stack-scout": {
+  "command": "uvx",
+  "args": ["stack-scout-mcp"],
+  "env": { "GITHUB_TOKEN": "your-token" }
+}
+```
+
+### From source (for contributors)
+
+```bash
+git clone https://github.com/mhassaan0806-jpg/stack-scout-mcp.git && cd stack-scout-mcp
+python -m venv .venv
+.venv/bin/pip install -e .          # Windows: .venv\Scripts\pip install -e .
+```
+
+Then point your MCP app at `/full/path/.venv/bin/python` with args `["/full/path/server.py"]`.
+From a clone, a `.env` file (copy `.env.example`) can hold the GitHub token.
 
 ## Tools your AI gets
 
@@ -129,9 +145,9 @@ Everything runs on your computer and the thinking is done by your own AI, so it 
 ## Use it without an AI
 
 ```bash
-python tools/scout_stack.py "online shoe store" --language TypeScript
-python tools/scout_stack.py "pdf tool" --components "extract text from pdf files in python"
-python tools/research_tool.py medusajs/medusa
+python -m stack_scout_mcp.tools.scout_stack "online shoe store" --language TypeScript
+python -m stack_scout_mcp.tools.scout_stack "pdf tool" --components "extract text from pdf files in python"
+python -m stack_scout_mcp.tools.research_tool medusajs/medusa
 ```
 
 ## Tests
@@ -144,12 +160,13 @@ python -m unittest discover tests                 # offline, < 1 second
 ## How it's organised
 
 ```
-server.py           MCP server: thin wrapper around tools/
-tools/              Python scripts that do the work (search, license, health, research, rank, report)
-tools/data/         Building-block catalog: add needs here, no code needed
-workflows/          Plain-language guides: how to run, evaluate, connect and extend
-tests/              Offline logic tests + a live MCP smoke test
-.tmp/               Cache and scratch output (safe to delete)
+stack_scout_mcp/server.py       MCP server: thin wrapper around tools/
+stack_scout_mcp/tools/          Scripts that do the work (search, license, health, research, rank, report)
+stack_scout_mcp/tools/data/     Building-block catalog: add needs here, no code needed
+server.py                       Runs the server from a clone
+workflows/                      Plain-language guides: how to run, evaluate, connect and extend
+tests/                          Offline logic tests + a live MCP smoke test
+.tmp/                           Cache when running from a clone (safe to delete)
 ```
 
 ## Limits (honestly)
@@ -163,7 +180,8 @@ tests/              Offline logic tests + a live MCP smoke test
 
 ## Contributing
 
-The easiest win is a better catalog. See [workflows/extend_catalog.md](workflows/extend_catalog.md).
+The easiest win is a better catalog. See
+[workflows/extend_catalog.md](https://github.com/mhassaan0806-jpg/stack-scout-mcp/blob/main/workflows/extend_catalog.md).
 Please run `python -m unittest discover tests` before opening a pull request.
 
 ## FAQ
@@ -206,4 +224,7 @@ self-hosted alternatives, GitHub repository health, free developer tools, AI cod
 
 ## License
 
-[MIT](LICENSE)
+[MIT](https://github.com/mhassaan0806-jpg/stack-scout-mcp/blob/main/LICENSE)
+
+<!-- mcp-name: io.github.mhassaan0806-jpg/stack-scout-mcp -->
+<!-- Above: ownership marker for the official MCP Registry. Keep it. -->

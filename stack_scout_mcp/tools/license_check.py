@@ -9,7 +9,7 @@ Categories (and points toward the 0-100 health score):
     not-free       --  source-available with use restrictions (BUSL, SSPL...). Reject.
 
 CLI:
-    python tools/license_check.py MIT AGPL-3.0 BUSL-1.1 NOASSERTION
+    python -m stack_scout_mcp.tools.license_check MIT AGPL-3.0 BUSL-1.1 NOASSERTION
 """
 from __future__ import annotations
 

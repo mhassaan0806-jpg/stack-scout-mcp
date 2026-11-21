@@ -6,8 +6,8 @@ pattern ("a 2D game engine") is searched as typed. If it sounds like an app
 ("...app", "...website"), common app blocks are added too.
 
 CLI:
-    python tools/plan_components.py "I want to build an online shoe store"
-    python tools/plan_components.py --list
+    python -m stack_scout_mcp.tools.plan_components "I want to build an online shoe store"
+    python -m stack_scout_mcp.tools.plan_components --list
 """
 from __future__ import annotations
 
@@ -17,8 +17,7 @@ import sys
 from functools import lru_cache
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))  # allow `python tools/x.py`
-from tools._common import DATA_DIR  # noqa: E402
+from ._common import DATA_DIR
 
 
 @lru_cache(maxsize=1)
@@ -73,7 +72,7 @@ def list_components() -> list[dict]:
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        sys.exit('usage: python tools/plan_components.py "your app idea"  |  --list')
+        sys.exit('usage: python -m stack_scout_mcp.tools.plan_components "your app idea"  |  --list')
     if sys.argv[1] == "--list":
         print(json.dumps(list_components(), indent=2))
     else:

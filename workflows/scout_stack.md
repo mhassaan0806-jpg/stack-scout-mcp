@@ -9,16 +9,16 @@ Stack Scout collects facts. The user's AI writes the pros, cons and fit from the
 ## Required inputs
 - **Idea** (required): what the user wants to build, in their words.
 - **Needs** (strongly recommended): the separate needs, split by the user's AI. Each one is a catalog
-  id (`auth`, `payments`... see `python tools/plan_components.py --list`) or plain words.
+  id (`auth`, `payments`... see `python -m stack_scout_mcp.tools.plan_components --list`) or plain words.
 - **Language** (optional): preferred language for code libraries.
 - **Top N** (optional, default 3) and **research** (default on).
 
 ## Flow and tools
-1. **Split into needs.** Normally the user's AI does this. Backup: `tools/plan_components.py`
+1. **Split into needs.** Normally the user's AI does this. Backup: `stack_scout_mcp/tools/plan_components.py`
    (keyword rules). A request that matches nothing is searched as typed; app-like requests also get
    common app blocks.
-2. **Search** (`tools/scout_stack.py` → `github_search.py`), one need at a time (rate limited):
-   - catalog need: one tuned `topic:` query from `tools/data/components.json`
+2. **Search** (`stack_scout_mcp/tools/scout_stack.py` → `github_search.py`), one need at a time (rate limited):
+   - catalog need: one tuned `topic:` query from `stack_scout_mcp/tools/data/components.json`
    - plain words: filler removed and any named language pulled out ("in python" → `language:Python`).
      Then two searches, merged: all key words (precise) and the nouns only (broad).
 3. **License check** (`research_tool.resolve_license` → `license_check.classify_text`): reads the
@@ -32,9 +32,9 @@ Stack Scout collects facts. The user's AI writes the pros, cons and fit from the
    telling the AI how to present it honestly.
 
 ```
-python tools/scout_stack.py "online shoe store" --components ecommerce,payments,auth --language TypeScript --out .tmp/shoe.md
-python tools/scout_stack.py "pdf tool" --components "extract text from pdf files in python"
-python tools/research_tool.py medusajs/medusa
+python -m stack_scout_mcp.tools.scout_stack "online shoe store" --components ecommerce,payments,auth --language TypeScript --out .tmp/shoe.md
+python -m stack_scout_mcp.tools.scout_stack "pdf tool" --components "extract text from pdf files in python"
+python -m stack_scout_mcp.tools.research_tool medusajs/medusa
 ```
 Through MCP: `scout_stack(idea, needs, language)`, `find_tools(need)`, `research_tool(repo)`.
 

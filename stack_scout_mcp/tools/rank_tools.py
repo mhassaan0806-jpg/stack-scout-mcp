@@ -6,8 +6,8 @@ Plain-language needs: bonus = share of the key words the repo mentions (0-25), s
 hugely popular but loosely related repo doesn't beat a focused, healthy one.
 
 CLI (reads the JSON list printed by github_search.py):
-    python tools/github_search.py "topic:payments" > .tmp/payments.json
-    python tools/rank_tools.py .tmp/payments.json --top 3
+    python -m stack_scout_mcp.tools.github_search "topic:payments" > .tmp/payments.json
+    python -m stack_scout_mcp.tools.rank_tools .tmp/payments.json --top 3
 """
 from __future__ import annotations
 
@@ -16,8 +16,7 @@ import json
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))  # allow `python tools/x.py`
-from tools.repo_health import assess  # noqa: E402
+from .repo_health import assess
 
 RELEVANCE_MAX = 15
 TERM_RELEVANCE_MAX = 25  # plain-language searches are noisier, so matching the words counts more

@@ -9,9 +9,9 @@ Use when the user pastes a link, or to double-check a pick before recommending i
 
 ## Tools
 ```
-python tools/research_tool.py medusajs/medusa          # full research notes
-python tools/repo_health.py medusajs/medusa saleor/saleor   # quick health + score (GitHub label only)
-python tools/license_check.py MIT AGPL-3.0 BUSL-1.1       # what a license means
+python -m stack_scout_mcp.tools.research_tool medusajs/medusa          # full research notes
+python -m stack_scout_mcp.tools.repo_health medusajs/medusa saleor/saleor   # quick health + score (GitHub label only)
+python -m stack_scout_mcp.tools.license_check MIT AGPL-3.0 BUSL-1.1       # what a license means
 ```
 Through MCP: `research_tool("medusajs/medusa")`.
 
