@@ -1,0 +1,25 @@
+# Files left out of the Claude Desktop extension (stack-scout.mcpb).
+# The bundle needs only: manifest.json, pyproject.toml, README.md, LICENSE, stack_scout_mcp/
+.git/
+.github/
+.venv/
+venv/
+.tmp/
+dist/
+tests/
+workflows/
+__pycache__/
+*.pyc
+.env
+.env.*
+.mcp.json
+.mcpbignore
+.gitignore
+CLAUDE.md
+idea.md
+llms.txt
+PRIVACY.md
+server.py
+requirements.txt
+uv.lock
+*.mcpb

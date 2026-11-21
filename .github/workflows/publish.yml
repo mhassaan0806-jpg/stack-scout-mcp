@@ -1,7 +1,11 @@
 name: publish
 
-# Publishes to PyPI when a version tag (v0.1.0, v0.2.0, ...) is pushed.
-# Uses PyPI Trusted Publishing: no passwords or API tokens are stored anywhere.
+# On a version tag (v0.1.1, v0.2.0, ...):
+#   1. run the tests
+#   2. build the Python package and the Claude Desktop extension (stack-scout.mcpb)
+#   3. publish the package to PyPI (Trusted Publishing: no passwords or tokens stored anywhere)
+#   4. create a GitHub Release with the .mcpb attached, so this link always works:
+#      https://github.com/mhassaan0806-jpg/stack-scout-mcp/releases/latest/download/stack-scout.mcpb
 
 on:
   push:
@@ -19,18 +23,32 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Check the tag matches the package version
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Check the tag matches the package and extension versions
         run: |
           VERSION=$(python -c "import re; print(re.search(r'__version__ = \"(.+)\"', open('stack_scout_mcp/__init__.py').read()).group(1))")
+          MANIFEST=$(python -c "import json; print(json.load(open('manifest.json'))['version'])")
           test "v$VERSION" = "${GITHUB_REF_NAME}" || { echo "Tag ${GITHUB_REF_NAME} != package version v$VERSION"; exit 1; }
-      - name: Build
+          test "$MANIFEST" = "$VERSION" || { echo "manifest.json version $MANIFEST != package version $VERSION"; exit 1; }
+      - name: Build Python package
         run: pip install build && python -m build
+      - name: Build Claude Desktop extension
+        run: |
+          npx -y @anthropic-ai/mcpb validate manifest.json
+          npx -y @anthropic-ai/mcpb pack . stack-scout.mcpb
+          npx -y @anthropic-ai/mcpb info stack-scout.mcpb
       - uses: actions/upload-artifact@v4
         with:
           name: dist
           path: dist/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mcpb
+          path: stack-scout.mcpb
 
-  publish:
+  publish-pypi:
     needs: build
     runs-on: ubuntu-latest
     environment: pypi
@@ -42,3 +60,32 @@ jobs:
           name: dist
           path: dist/
       - uses: pypa/gh-action-pypi-publish@release/v1
+
+  github-release:
+    needs: publish-pypi
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      - uses: actions/download-artifact@v4
+        with:
+          name: mcpb
+          path: .
+      - uses: softprops/action-gh-release@v2
+        with:
+          name: Stack Scout ${{ github.ref_name }}
+          generate_release_notes: true
+          body: |
+            ## Install
+
+            **Claude Desktop (easiest):** download `stack-scout.mcpb` below and double-click it.
+
+            **Claude Code / Cursor / VS Code:** see the [install guide](https://github.com/mhassaan0806-jpg/stack-scout-mcp#install).
+            PyPI: https://pypi.org/project/stack-scout-mcp/
+          files: |
+            stack-scout.mcpb
+            dist/*

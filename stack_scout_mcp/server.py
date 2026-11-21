@@ -12,6 +12,7 @@ from __future__ import annotations
 
 from mcp.server.mcpserver import MCPServer
 
+from . import __version__
 from .tools._common import FetchError, RateLimitError
 from .tools.format_report import AI_NOTE, format_component, format_report, format_research
 from .tools.github_search import get_repo
@@ -23,6 +24,8 @@ from .tools.scout_stack import scout, scout_component
 
 mcp = MCPServer(
     "stack-scout",
+    version=__version__,
+    website_url="https://github.com/mhassaan0806-jpg/stack-scout-mcp",
     instructions=(
         "Stack Scout finds free, open-source tools for anything a user wants to build, and checks they are "
         "alive and truly free. When a user describes a project or a need: (1) split it yourself into the "

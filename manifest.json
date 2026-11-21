@@ -1,0 +1,55 @@
+{
+  "manifest_version": "0.4",
+  "name": "stack-scout-mcp",
+  "display_name": "Stack Scout",
+  "version": "0.1.1",
+  "description": "Find free, open-source tools for anything you build, checked to be alive and truly free.",
+  "long_description": "Tell Claude what you want to build. Stack Scout finds free, open-source tools for every part of it, checks each one against live data (last code change, license file, releases, downloads, security score, known vulnerabilities, Hacker News) and explains the catch, such as paid enterprise features or restrictive licenses. It skips archived and abandoned projects. Free, open source (MIT), and runs on your computer.",
+  "author": {
+    "name": "mhassaan0806-jpg",
+    "url": "https://github.com/mhassaan0806-jpg"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mhassaan0806-jpg/stack-scout-mcp"
+  },
+  "homepage": "https://github.com/mhassaan0806-jpg/stack-scout-mcp",
+  "documentation": "https://github.com/mhassaan0806-jpg/stack-scout-mcp#readme",
+  "support": "https://github.com/mhassaan0806-jpg/stack-scout-mcp/issues",
+  "license": "MIT",
+  "keywords": ["open source", "free tools", "tech stack", "license checker", "alternatives", "developer tools"],
+  "privacy_policies": ["https://github.com/mhassaan0806-jpg/stack-scout-mcp/blob/main/PRIVACY.md"],
+  "server": {
+    "type": "uv",
+    "entry_point": "stack_scout_mcp/server.py",
+    "mcp_config": {
+      "command": "uv",
+      "args": ["run", "--directory", "${__dirname}", "stack-scout-mcp"],
+      "env": {
+        "GITHUB_TOKEN": "${user_config.github_token}"
+      }
+    }
+  },
+  "tools": [
+    {"name": "scout_stack", "description": "Find and research free, open-source tools for every need of a project"},
+    {"name": "find_tools", "description": "Find and research free, open-source tools for one need"},
+    {"name": "research_tool", "description": "Check one GitHub project: maintained? truly free? what's the catch?"},
+    {"name": "plan_app_components", "description": "Backup: guess an idea's needs from keywords"},
+    {"name": "list_building_blocks", "description": "List common needs with tuned searches"}
+  ],
+  "user_config": {
+    "github_token": {
+      "type": "string",
+      "title": "GitHub token (optional)",
+      "description": "Leave empty to start. A free GitHub token with no permissions raises searches from 10 to 30 a minute. Create one at github.com/settings/tokens.",
+      "sensitive": true,
+      "required": false
+    }
+  },
+  "compatibility": {
+    "platforms": ["darwin", "linux", "win32"],
+    "runtimes": {
+      "python": ">=3.10"
+    }
+  }
+}

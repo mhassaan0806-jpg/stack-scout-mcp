@@ -78,18 +78,49 @@ posing as tools.
 It works for anything, not just apps: "a 2D game engine" → Godot, PixiJS, GDevelop;
 "extract text from PDF files in python" → pdfplumber, pdftext.
 
-## Install (one line)
+## Install
 
-You need [uv](https://docs.astral.sh/uv/getting-started/installation/), a free Python tool runner.
-It downloads Stack Scout and keeps it updated for you.
+Pick the app you use. Each takes about 2 minutes.
 
-**Claude Code:**
+### Claude Desktop: easiest, no terminal
 
-```bash
-claude mcp add stack-scout -- uvx stack-scout-mcp
-```
+1. **[Download stack-scout.mcpb](https://github.com/mhassaan0806-jpg/stack-scout-mcp/releases/latest/download/stack-scout.mcpb)**
+2. **Double-click** the downloaded file. Claude Desktop opens.
+3. Click **Install**.
+4. Ask Claude: *"Use Stack Scout to find free tools for an online shoe store."*
 
-**Claude Desktop** (`claude_desktop_config.json`), **Cursor** (`~/.cursor/mcp.json`), **VS Code** and other MCP apps:
+Claude Desktop sets up everything Stack Scout needs by itself. Nothing else to install.
+
+### Cursor, VS Code or Claude Code
+
+**Step 1: install `uv` (one time only).** It's a free helper that downloads Stack Scout and keeps it updated.
+
+- **Windows:** open PowerShell and paste:
+  ```
+  powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+  ```
+- **Mac / Linux:** open Terminal and paste:
+  ```
+  curl -LsSf https://astral.sh/uv/install.sh | sh
+  ```
+
+Then **restart your computer** (or at least the app), so the app can find `uv`.
+
+**Step 2: add Stack Scout.**
+
+| App | How |
+|---|---|
+| **Cursor** | [![Add to Cursor](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/en/install-mcp?name=stack-scout&config=eyJjb21tYW5kIjoidXZ4IiwiYXJncyI6WyJzdGFjay1zY291dC1tY3AiXX0=) Click the button, then **Install** |
+| **VS Code** | [![Install in VS Code](https://img.shields.io/badge/VS_Code-Install_Stack_Scout-0098FF?logo=visualstudiocode&logoColor=white)](https://vscode.dev/redirect/mcp/install?name=stack-scout&config=%7B%22command%22%3A%22uvx%22%2C%22args%22%3A%5B%22stack-scout-mcp%22%5D%7D) Click the button, then **Install** |
+| **Claude Code** | Run: `claude mcp add stack-scout -- uvx stack-scout-mcp` |
+
+**Step 3: ask your AI:** *"Use Stack Scout to find free tools for an online shoe store."*
+
+The first answer takes a little longer (about 10 seconds) while Stack Scout downloads.
+
+### Any other MCP app (Windsurf, Zed, Cline, ...)
+
+Install `uv` (Step 1 above), then add this to the app's MCP settings:
 
 ```json
 {
@@ -102,18 +133,21 @@ claude mcp add stack-scout -- uvx stack-scout-mcp
 }
 ```
 
-Restart the app, then ask: *"Use Stack Scout to find free tools for an online shoe store."*
+### If something doesn't work
 
-**Optional: more searches.** Without a token, GitHub allows 10 searches a minute. A free
-[GitHub token](https://github.com/settings/tokens) (no permissions needed) raises that to 30. Add it to the config:
+| Problem | Fix |
+|---|---|
+| The app says it can't find `uvx` | Restart your computer after installing `uv`. Still failing? Use the full path: `C:\Users\<you>\.local\bin\uvx.exe` on Windows, `~/.local/bin/uvx` on Mac/Linux |
+| Stack Scout doesn't appear in the app | Fully quit the app (not just the window) and open it again |
+| "Rate limit" message | Wait one minute, or add a free GitHub token (below) |
+| Something else | [Open an issue](https://github.com/mhassaan0806-jpg/stack-scout-mcp/issues) and paste the error |
 
-```json
-"stack-scout": {
-  "command": "uvx",
-  "args": ["stack-scout-mcp"],
-  "env": { "GITHUB_TOKEN": "your-token" }
-}
-```
+### Optional: more searches per minute
+
+Without a token, GitHub allows 10 searches a minute, which is enough for most people. A free
+[GitHub token](https://github.com/settings/tokens) (tick no permissions) raises it to 30.
+- **Claude Desktop:** paste it in Settings → Extensions → Stack Scout.
+- **Other apps:** add `"env": { "GITHUB_TOKEN": "your-token" }` next to `"args"` in the config.
 
 ### From source (for contributors)
 
@@ -168,6 +202,11 @@ workflows/                      Plain-language guides: how to run, evaluate, con
 tests/                          Offline logic tests + a live MCP smoke test
 .tmp/                           Cache when running from a clone (safe to delete)
 ```
+
+## Privacy
+
+No account, no analytics, no server of ours. Stack Scout only sends search words and project names to the free
+public services listed above. Details: [PRIVACY.md](https://github.com/mhassaan0806-jpg/stack-scout-mcp/blob/main/PRIVACY.md).
 
 ## Limits (honestly)
 

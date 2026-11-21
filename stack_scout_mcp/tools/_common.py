@@ -16,9 +16,10 @@ from pathlib import Path
 from .. import __version__
 
 DATA_DIR = Path(__file__).resolve().parent / "data"
-# The repo root when running from a git clone; site-packages when installed (then unused).
+# The repo root when running from a git clone. When installed (PyPI, Claude Desktop extension)
+# there is no .git folder, so the cache goes to the user's cache folder instead.
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
-IN_CLONE = (REPO_ROOT / "pyproject.toml").exists()
+IN_CLONE = (REPO_ROOT / ".git").exists()
 
 
 def _cache_dir() -> Path:

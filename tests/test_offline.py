@@ -174,5 +174,34 @@ Requires PostgreSQL 14+ and Redis. This project is in beta and has breaking chan
             self.assertIn(expected, md)
 
 
+try:
+    import mcp  # noqa: F401
+    HAVE_MCP = True
+except ImportError:
+    HAVE_MCP = False
+
+
+class ReleaseConsistencyTests(unittest.TestCase):
+    ROOT = Path(__file__).resolve().parent.parent
+
+    @unittest.skipUnless(HAVE_MCP, "needs the mcp package (pip install -e .)")
+    def test_extension_manifest_matches_package(self):
+        import json
+        from stack_scout_mcp import __version__
+        from stack_scout_mcp.server import mcp
+
+        manifest = json.loads((self.ROOT / "manifest.json").read_text(encoding="utf-8"))
+        self.assertEqual(manifest["version"], __version__)
+        self.assertEqual(manifest["server"]["type"], "uv")
+        self.assertIn("stack-scout-mcp", manifest["server"]["mcp_config"]["args"])
+        import asyncio
+        listed = {t.name for t in asyncio.run(mcp.list_tools())}
+        self.assertEqual({t["name"] for t in manifest["tools"]}, listed)
+
+    def test_readme_has_registry_marker(self):
+        text = (self.ROOT / "README.md").read_text(encoding="utf-8")
+        self.assertIn("mcp-name: io.github.mhassaan0806-jpg/stack-scout-mcp", text)
+
+
 if __name__ == "__main__":
     unittest.main()

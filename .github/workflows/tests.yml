@@ -22,3 +22,16 @@ jobs:
         run: python -m unittest discover tests -v
       - name: Installed command starts and lists its tools
         run: python -c "import asyncio; from stack_scout_mcp import server; print([t.name for t in asyncio.run(server.mcp.list_tools())])"
+
+  extension-manifest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Validate and pack the Claude Desktop extension
+        run: |
+          npx -y @anthropic-ai/mcpb validate manifest.json
+          npx -y @anthropic-ai/mcpb pack . /tmp/stack-scout.mcpb
+          npx -y @anthropic-ai/mcpb info /tmp/stack-scout.mcpb
