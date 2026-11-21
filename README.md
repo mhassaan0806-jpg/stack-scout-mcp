@@ -1,7 +1,36 @@
-# Stack Scout MCP
+# Stack Scout MCP: free open-source tool finder for Claude and Cursor
 
 **The honest free-tool finder for your AI.** Describe what you want to build. Get free, open-source
 tools for every part of it: checked to be alive, checked to be truly free, with the catch spelled out.
+
+[![tests](https://github.com/mhassaan0806-jpg/stack-scout-mcp/actions/workflows/tests.yml/badge.svg)](https://github.com/mhassaan0806-jpg/stack-scout-mcp/actions/workflows/tests.yml)
+![License: MIT](https://img.shields.io/badge/license-MIT-green)
+![Cost: free](https://img.shields.io/badge/cost-%240-brightgreen)
+
+## What is Stack Scout? (in simple words)
+
+You want to make an app. For example, a shoe shop.
+
+Your app needs many parts:
+- a page to log in
+- a shopping cart
+- a way to pay
+- emails
+
+You do not need to make every part yourself. People share free parts on the internet.
+But it is hard to find good ones. Some are old. Some are broken. Some say "free", but they are not really free.
+
+**Stack Scout helps your AI find the good free parts.**
+
+1. You tell your AI (Claude or Cursor): "I want to make a shoe shop."
+2. Your AI asks Stack Scout for help.
+3. Stack Scout looks on GitHub. GitHub is a big website with free code.
+4. Stack Scout checks every tool. Is it new? Do many people use it? Is it really free? Is there a catch?
+5. Your AI gives you a short list: the best free tools, with links, good points and bad points.
+
+Stack Scout is free. It runs on your computer. You do not pay for anything.
+
+## How it works (for developers)
 
 Stack Scout is an MCP server for AI assistants you already use (Claude, Cursor, ...). Your AI splits your
 idea into needs. Stack Scout finds the tools for each need, reads their licenses and READMEs, checks
@@ -136,6 +165,44 @@ tests/              Offline logic tests + a live MCP smoke test
 
 The easiest win is a better catalog. See [workflows/extend_catalog.md](workflows/extend_catalog.md).
 Please run `python -m unittest discover tests` before opening a pull request.
+
+## FAQ
+
+**What is Stack Scout?**
+Stack Scout is a free, open-source MCP server that helps AI assistants like Claude and Cursor find free,
+open-source tools for any software project. It checks that each tool is maintained and truly free, and
+explains the catch, such as paid "enterprise" features or license duties.
+
+**Is Stack Scout free?**
+Yes. It is MIT-licensed, runs on your own computer, uses your own AI assistant, and only calls free public
+data sources. There is no account, subscription or API bill.
+
+**What is an MCP server?**
+MCP (Model Context Protocol) is a standard way to give AI assistants extra tools. An MCP server is a small
+program the AI can call. Claude Desktop, Claude Code, Cursor, VS Code and other apps support MCP.
+
+**How is this different from just asking an AI for free tools?**
+An AI answering from memory can suggest tools that are abandoned, archived, or no longer open source.
+Stack Scout checks live data every time: last code change, license file, releases, downloads, security
+score and known vulnerabilities.
+
+**Does it find open-source alternatives to paid software?**
+Yes. Describe the need ("an open-source alternative to Shopify", "self-hosted analytics") and it returns
+free, maintained options, with any paid parts flagged.
+
+**Does it only work for web apps?**
+No. It works for any need: games ("2D game engine"), data tools ("extract text from PDF files in python"),
+mobile apps, internal tools and more.
+
+**Which tools does it reject?**
+Archived projects, projects with no code changes in two years, "source-available" licenses that restrict
+use (BUSL, SSPL, Elastic, FSL), and awesome-lists or tutorials posing as tools.
+
+## Keywords
+
+free tool finder, open source alternatives, MCP server, Model Context Protocol, Claude MCP, Cursor MCP,
+tech stack recommendation, open source software discovery, license checker, open core detection,
+self-hosted alternatives, GitHub repository health, free developer tools, AI coding assistant tools
 
 ## License
 

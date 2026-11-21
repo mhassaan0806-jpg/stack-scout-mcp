@@ -1,0 +1,24 @@
+# Stack Scout MCP
+
+> Stack Scout is a free, open-source (MIT) MCP server that helps AI assistants such as Claude and Cursor find free, open-source tools for any software project. It checks each tool against live data (activity, license file, releases, downloads, OpenSSF Scorecard, known vulnerabilities, Hacker News) and reports the catch, such as open-core paid features or restrictive licenses, so the AI can recommend tools honestly.
+
+Key facts:
+- Cost: $0. Runs locally, uses the user's own AI assistant, and calls only free public data sources (GitHub, deps.dev, OSV, npm, PyPI, crates.io, Hacker News).
+- Works for any need: web apps (an online store: cart, payments, login, email), games (a 2D game engine), data tools (extract text from PDF files in Python), and more.
+- Rejects archived projects, projects with no code changes in 2 years, source-available licenses (BUSL, SSPL, Elastic, FSL), and awesome-lists or tutorials.
+- Detects "open core": a free license plus paid enterprise parts (for example Medusa, Meilisearch, PostHog).
+- MCP tools: scout_stack (all needs of a project), find_tools (one need), research_tool (one GitHub repo), plan_app_components, list_building_blocks.
+- Install: Python 3.10+; clone the repo, `pip install -r requirements.txt`, and register `server.py` as a stdio MCP server in Claude Desktop, Claude Code or Cursor.
+
+## Docs
+
+- [README](https://github.com/mhassaan0806-jpg/stack-scout-mcp/blob/main/README.md): what it is, install, examples, FAQ
+- [How a project is scouted](https://github.com/mhassaan0806-jpg/stack-scout-mcp/blob/main/workflows/scout_stack.md)
+- [How a single repo is evaluated](https://github.com/mhassaan0806-jpg/stack-scout-mcp/blob/main/workflows/evaluate_repo.md)
+- [Connect to Claude / Cursor](https://github.com/mhassaan0806-jpg/stack-scout-mcp/blob/main/workflows/connect_mcp_server.md)
+- [Add a building block](https://github.com/mhassaan0806-jpg/stack-scout-mcp/blob/main/workflows/extend_catalog.md)
+
+## Code
+
+- [server.py](https://github.com/mhassaan0806-jpg/stack-scout-mcp/blob/main/server.py): MCP server
+- [tools/](https://github.com/mhassaan0806-jpg/stack-scout-mcp/tree/main/tools): search, license, health, research, ranking, report
